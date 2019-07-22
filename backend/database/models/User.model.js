@@ -13,7 +13,13 @@ const UserSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now
 	},
-	todos: [{id: String, task: String, isComplete: String}]
+	todos: [
+		{
+			id: String,
+			task: String,
+			isComplete: String
+		}
+	]
 })
 //compiling our schema into a Model. A model is a class with which we construct documents.
 //In this case, each document will be a user with properties and behaviors as declared in our schema.

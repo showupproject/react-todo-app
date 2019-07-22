@@ -1,9 +1,9 @@
 import React, {useContext} from 'react'
-import {TodoContext} from '../context/TodoContext'
+import {ChangeTodoContext} from '../context/TodoContext'
 import useInputState from '../hooks/useInputState'
 
 export default function EditForm({id, task, toggleIsEdit}) {
-	const {editTodo} = useContext(TodoContext)
+	const {editTodo} = useContext(ChangeTodoContext)
 	const [value, handleChange, reset] = useInputState(task)
 	const handleCancel = (e) => {
 		e.preventDefault()

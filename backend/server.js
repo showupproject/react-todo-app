@@ -1,6 +1,5 @@
 const express = require('express')
 const morgan = require('morgan')
-const path = require('path')
 const dbConnection = require('./database/db.js')
 const expressSession = require('express-session')
 const MongoStore = require('connect-mongo')(expressSession)
@@ -16,10 +15,6 @@ const PORT = 8080
 
 const app = express()
 app.use(morgan('dev'))
-
-// first so we have req.body
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
 
 //session middleware part
 // add session management to Express
@@ -37,19 +32,16 @@ app.use(
 	})
 )
 
+//req.body
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
 //passport.initialize() middleware is required to initialize Passport after strategy use
 app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/user', user)
 app.use('/todos', todos)
-// app.get('/*', function(req, res) {
-// 	res.sendFile(path.join(__dirname, '../public/index.html'), function(err) {
-// 		if (err) {
-// 			res.status(500).send(err)
-// 		}
-// 	})
-// })
 
 app.listen(PORT, (err) => {
 	if (err) throw err

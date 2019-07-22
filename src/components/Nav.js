@@ -1,12 +1,12 @@
 import React, {useContext} from 'react'
 import {Link} from 'react-router-dom'
-import {UserContext, DispatchContext} from '../context/TodoContext'
+import {UserContext, ChangeTodoContext} from '../context/TodoContext'
 
 import axios from 'axios'
 
 const Nav = () => {
 	const {user, setUser, setLoggedin, setMessage} = useContext(UserContext)
-	const dispatch = useContext(DispatchContext)
+	const {setTodos} = useContext(ChangeTodoContext)
 
 	const handleClick = (e) => {
 		e.preventDefault()
@@ -15,13 +15,11 @@ const Nav = () => {
 			.then((res) => {
 				console.log('logout response: ')
 				console.log(res)
-				if (res.status === 200) {
+				if (res.data.logout === 'success') {
 					console.log('now user logged out')
-					setUser(null)
 					setLoggedin(false)
-					console.log(res.data)
-					dispatch({type: 'SET', payload: null})
-					//	setTodos(res.data)
+					setTodos(null)
+					setUser(null)
 				}
 			})
 			.catch((err) => {

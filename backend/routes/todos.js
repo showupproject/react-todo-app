@@ -1,24 +1,43 @@
 const express = require('express')
 const router = express.Router()
-const passport = require('passport')
 // Load User model
-const User = require('../database/models/User')
+const User = require('../database/models/User.model')
+const {isLoggedIn} = require('../middleware')
 
-router.post('/', (req, res, next) => {
+router.post('/', isLoggedIn, (req, res, next) => {
 	const newTodo = req.body
-	console.log('newTodo: ', newTodo)
-	User.findAndModify({
-		query: {email: req.user.email},
-		update: {$push: {todos: newTodo}},
-		function(error, success) {
-			if (error) {
-				console.log('addtodo error', error)
+	console.log('newTodo received:', newTodo)
+	console.log('now updating database')
+	User.findOneAndUpdate(
+		{email: req.user.email},
+		{$push: {todos: newTodo}},
+		function(err, success) {
+			if (err) {
+				console.log('addtodo error', err)
+				res.send({error: 'addtodo error'})
 			} else {
 				console.log(success)
+				res.send({error: null})
 			}
-			res.end()
 		}
-	})
+	)
+})
+
+router.delete('/:id', isLoggedIn, (req, res, next) => {
+	const id = req.params.id
+	User.findOneAndUpdate(
+		{email: req.user.email},
+		{$pull: {todos: {id: id}}},
+		function(err, success) {
+			if (err) {
+				console.log('deletetodo error', err)
+				res.send({error: 'deletetodo error'})
+			} else {
+				console.log(success)
+				res.send({error: null})
+			}
+		}
+	)
 })
 
 module.exports = router

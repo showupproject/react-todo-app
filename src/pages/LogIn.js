@@ -2,13 +2,13 @@ import React, {useState, useContext} from 'react'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'
 import useInputState from '../hooks/useInputState'
-import {DispatchContext, UserContext} from '../context/TodoContext'
+import {ChangeTodoContext, UserContext} from '../context/TodoContext'
 
 const LogIn = () => {
 	const [email, handleEmailChange, resetEmail] = useInputState('')
 	const [password, handlePasswordChange, resetPassword] = useInputState('')
 	const {setLoggedin, setMessage, message, setUser} = useContext(UserContext)
-	const dispatch = useContext(DispatchContext)
+	const {setTodos} = useContext(ChangeTodoContext)
 	const [redirectTo, setRedirectTo] = useState(null)
 	return redirectTo ? (
 		<Redirect to={{pathname: redirectTo}} />
@@ -32,8 +32,7 @@ const LogIn = () => {
 									console.log('now user loggedin')
 									setUser(email)
 									setLoggedin(true)
-									dispatch({type: 'SET', payload: res.data})
-									//	setTodos(res.data)
+									setTodos(res.data)
 									if (message) {
 										setMessage('')
 									}

@@ -1,15 +1,15 @@
 import React, {useContext} from 'react'
 import useInputState from '../hooks/useInputState'
-import {DispatchContext} from '../context/TodoContext'
+import {ChangeTodoContext} from '../context/TodoContext'
 
 export default function Form() {
 	const [value, handleChange, reset] = useInputState('')
-	const dispatch = useContext(DispatchContext)
+	const {addTodo} = useContext(ChangeTodoContext)
 	return (
 		<form
 			onSubmit={(e) => {
 				e.preventDefault()
-				dispatch({type: 'ADD', task: value})
+				addTodo(value)
 				//addTodo(value)
 				reset()
 			}}

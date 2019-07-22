@@ -8,9 +8,13 @@ const Dashboard = () => {
 	return (
 		<React.Fragment>
 			<h1>This is the dashboard page</h1>
-			{user && <p>welcome {user}</p>}
-			<Form />
-			<TodoList />
+			{user && (
+				<div>
+					<p>welcome {user}</p>
+					<Form />
+					<TodoList />
+				</div>
+			)}
 		</React.Fragment>
 	)
 }

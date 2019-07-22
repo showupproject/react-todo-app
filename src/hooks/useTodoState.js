@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useLocalStorageState} from './useLocalStorageState'
 import uuid from 'uuid/v4'
 import axios from 'axios'
 
@@ -7,7 +7,7 @@ import axios from 'axios'
 // 	{id: 2, task: 'take a walk', isComplete: true}
 // ]
 export default (initialVal) => {
-	const [todos, setTodos] = useState(initialVal)
+	const [todos, setTodos] = useLocalStorageState('todos', initialVal)
 
 	const addTodo = (newText) => {
 		const newTask = {id: uuid(), task: newText, isComplete: false}
@@ -16,7 +16,7 @@ export default (initialVal) => {
 			.then((res) => {
 				console.log('add an todoItem response: ')
 				console.log(res)
-				if (res.status === 200) {
+				if (!res.data.error) {
 					console.log('new todo added')
 					setTodos([...todos, newTask])
 				}
@@ -29,7 +29,20 @@ export default (initialVal) => {
 
 	const deleteTodo = (id) => {
 		const newtodos = todos.filter((todo) => todo.id !== id)
-		setTodos(newtodos)
+		axios
+			.delete(`/todos/${id}`)
+			.then((res) => {
+				console.log('delete an todoItem response: ')
+				console.log(res)
+				if (!res.data.error) {
+					console.log('deleted a todo')
+					setTodos(newtodos)
+				}
+			})
+			.catch((err) => {
+				console.log('delete todo error')
+				console.log(err)
+			})
 	}
 
 	const editTodo = (id, newtask) => {

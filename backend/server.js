@@ -24,7 +24,8 @@ app.use(
 	expressSession({
 		secret: uid.sync(18),
 		cookie: {
-			maxAge: 86400 * 1000 // 24 hours in milliseconds
+			maxAge: 86400 * 2000, // 48 hours in milliseconds
+			secure: false
 		},
 		store: new MongoStore({mongooseConnection: dbConnection}),
 		resave: false,

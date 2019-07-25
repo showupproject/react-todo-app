@@ -1,5 +1,6 @@
-import React, {useState, createContext} from 'react'
+import React, {createContext} from 'react'
 import useTodoState from '../hooks/useTodoState'
+import useLocalStorageState from '../hooks/useLocalStorageState'
 
 const defaultTodos = [
 	{id: 1, task: 'Mow the lawn using goats', completed: false},
@@ -13,17 +14,26 @@ export default function TodosProvider(props) {
 	const {todos, setTodos, addTodo, deleteTodo, editTodo} = useTodoState(
 		defaultTodos
 	)
-	const [loggedin, setLoggedin] = useState(false)
-	const [message, setMessage] = useState(null)
-	const [user, setUser] = useState('user', null)
+	const [user, setUser] = useLocalStorageState('user', null)
+	// useEffect(
+	// 	() => {
+	// 		axios
+	// 			.get('/todos')
+	// 			.then((res) => {
+	// 				console.log('todos fetched, setting todos state...')
+	// 				setTodos(res.data.todos)
+	// 			})
+	// 			.catch((err) => {
+	// 				console.log('fetching todo error')
+	// 				console.log(err)
+	// 			})
+	// 	},
+	// 	[user]
+	// )
 
 	return (
 		<UserContext.Provider
 			value={{
-				loggedin,
-				setLoggedin,
-				message,
-				setMessage,
 				user,
 				setUser
 			}}

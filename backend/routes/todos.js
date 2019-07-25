@@ -4,6 +4,11 @@ const router = express.Router()
 const User = require('../database/models/User.model')
 const {isLoggedIn} = require('../middleware')
 
+router.get('/', isLoggedIn, (req, res, next) => {
+	console.log('sending todos')
+	res.send({email: req.user.email, todos: req.user.todos})
+})
+
 router.post('/', isLoggedIn, (req, res, next) => {
 	const newTodo = req.body
 	console.log('newTodo received:', newTodo)

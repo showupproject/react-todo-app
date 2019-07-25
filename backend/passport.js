@@ -43,12 +43,11 @@ module.exports = function(passport) {
 		done(null, user.id)
 	})
 
-	// which matched our session id to the session-file-store and retrieved our user id.
+	// subsequent request, match session id to the session-file-store and retrieved our user id.
 	//user object attaches to the request as req.user
 	passport.deserializeUser((id, done) => {
 		User.findById(id, (err, user) => {
 			console.log('*** passport.deserializeUser called')
-			console.log(user)
 			done(err, user)
 		})
 	})

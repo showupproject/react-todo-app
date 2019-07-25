@@ -5,16 +5,6 @@ const passport = require('passport')
 // Load User model
 const User = require('../database/models/User.model')
 
-router.get('/login', (req, res, next) => {
-	console.log('===== user!!======')
-	console.log(req.user)
-	if (req.user) {
-		res.json({user: req.user})
-	} else {
-		res.json({user: null})
-	}
-})
-
 router.post('/login', (req, res, next) => {
 	console.log('Inside POST /login callback')
 	passport.authenticate('local', (err, user, info) => {
@@ -65,8 +55,10 @@ router.post('/register', (req, res) => {
 
 router.get('/logout', (req, res, next) => {
 	console.log('user hit logout endpoint')
+
 	req.logout()
-	res.send({logout: 'success'})
+	console.log('user logged out')
+	res.json({logout: 'success'})
 })
 
 module.exports = router

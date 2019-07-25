@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import useLocalStorageState from './useLocalStorageState'
 import uuid from 'uuid/v4'
 import axios from 'axios'
 
@@ -7,7 +7,7 @@ import axios from 'axios'
 // 	{id: 2, task: 'take a walk', isComplete: true}
 // ]
 export default (initialVal) => {
-	const [todos, setTodos] = useState(initialVal)
+	const [todos, setTodos] = useLocalStorageState('todos', initialVal)
 
 	const addTodo = (newText) => {
 		const newTask = {id: uuid(), task: newText, isComplete: false}

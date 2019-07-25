@@ -7,7 +7,7 @@ function useLocalStorageState(key, defaultVal) {
 		} catch (e) {
 			value = defaultVal
 		}
-		console.log('USING', value)
+		console.log(`the key is${key}, value is ${value} now`)
 		return value
 	})
 	useEffect(
@@ -18,4 +18,4 @@ function useLocalStorageState(key, defaultVal) {
 	)
 	return [state, setState]
 }
-export {useLocalStorageState}
+export default useLocalStorageState

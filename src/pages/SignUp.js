@@ -19,7 +19,7 @@ function SignUp() {
 					e.preventDefault()
 					const formData = {email, password}
 					axios
-						.post('/signup', formData)
+						.post('/user/register', formData)
 						.then((res) => {
 							console.log('Data sent!')
 							console.log(res)

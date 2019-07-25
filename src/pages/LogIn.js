@@ -2,12 +2,12 @@ import React, {useState, useContext} from 'react'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'
 import useInputState from '../hooks/useInputState'
-import {ChangeTodoContext, UserContext} from '../context/TodoContext'
+import {UserContext, ChangeTodoContext} from '../context/TodoContext'
 
 const LogIn = () => {
 	const [email, handleEmailChange, resetEmail] = useInputState('')
 	const [password, handlePasswordChange, resetPassword] = useInputState('')
-	const {setLoggedin, setMessage, message, setUser} = useContext(UserContext)
+	const {setUser} = useContext(UserContext)
 	const {setTodos} = useContext(ChangeTodoContext)
 	const [redirectTo, setRedirectTo] = useState(null)
 	return redirectTo ? (
@@ -15,13 +15,14 @@ const LogIn = () => {
 	) : (
 		<div>
 			<h1>This is the login page!</h1>
-			{message && <p>{message}</p>}
 			<form
 				onSubmit={(e) => {
 					e.preventDefault()
 					const formData = {email, password}
 					axios
-						.post('/user/login', formData)
+						.post('/user/login', formData, {
+							withCredentials: true
+						})
 						.then((res) => {
 							console.log('login response: ')
 							console.log(res)
@@ -31,21 +32,14 @@ const LogIn = () => {
 									resetPassword()
 									console.log('now user loggedin')
 									setUser(email)
-									setLoggedin(true)
 									setTodos(res.data)
-									if (message) {
-										setMessage('')
-									}
 									setRedirectTo('/dashboard')
-								} else {
-									setMessage('email or password wrong')
 								}
 							}
 						})
 						.catch((err) => {
 							console.log('login error')
 							console.log(err)
-							setMessage("There's error logging in")
 						})
 				}}
 			>
